@@ -1,0 +1,57 @@
+//-(60*60*60*24*30*13)
+
+package com.madblox.xdefeffault.myapplication;
+
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.madblox.xdefeffault.myapplication.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class MainActivity extends AppCompatActivity {
+
+    private TextView countdownText;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        countdownText = findViewById(R.id.countdownText);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, 2024);
+        calendar.set(Calendar.MONTH, Calendar.DECEMBER);
+        calendar.set(Calendar.DAY_OF_MONTH, 31);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+
+        // Calculate the time difference between now and the target date
+        long currentTime = System.currentTimeMillis();
+        long targetTime = calendar.getTimeInMillis();
+        long timeDifference = targetTime - currentTime;
+
+        // Start the countdown timer
+        new CountDownTimer(timeDifference, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM:dd:HH:mm:ss");
+                Date date = new Date(millisUntilFinished);
+                String formattedTime = dateFormat.format(date);
+                countdownText.setText(formattedTime);
+            }
+
+            @Override
+            public void onFinish() {
+                countdownText.setText("Nowy Rok");
+            }
+        }.start();
+    }
+}
